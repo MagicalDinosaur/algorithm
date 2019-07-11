@@ -26,5 +26,17 @@ let obj = {
     }
 }
 
+var b1 = obj.c
+var c1 = obj.d
+obj.c = [1, 2, 3]
+obj.d = [1,2,3,4.5]
+b1()
+console.log(c1)
+
+// obj.c()
+
 var obj2 = deepClone(obj);
-console.log(obj2);
+// console.log(obj2);
+
+
+
