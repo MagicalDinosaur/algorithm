@@ -1,3 +1,6 @@
+/**
+ * 深拷贝函数
+ */
 function deepClone(obj) {
     // 首先判断 Date 和 RegExp 类型
     if (obj instanceof RegExp) return new RegExp(obj);
@@ -14,6 +17,8 @@ function deepClone(obj) {
     }
     return t;
 }
+
+
 
 let obj = {
     a: 1,
