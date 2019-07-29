@@ -1,52 +1,34 @@
-class Scheduler {
-    constructor() {
-        this.allTask = []
-    }
+let s = [
+    { 'type': 'callPhone', 'content': '1', 'contactMethod': 'phone', 'contactTime': '2019-03-25 09:26:55.110000 +00:00', 'saler': 'y' },
+    { 'type': 'callPhone', 'content': '18039519860', 'contactMethod': 'phone', 'contactTime': '2019-03-25 09:26:55.110000 +00:00', 'saler': '朱辛浩' },
+    { 'type': 'callPhone', 'content': '1', 'contactMethod': 'phone', 'contactTime': '2019-03-25 09:26:55.110000 +00:00', 'saler': '朱辛浩' }
+]
+let b = [
+    { 'type': 'callPhone', 'content': '1', 'saler': '朱辛浩' },
+    { 'type': 'callPhone', 'content': '1', 'saler': 'y' }
+]
+// console.log(utils.findIndex(s,{'type':'callPhone','content':'1','contactTime':'2019-03-25 09:26:55.110000 +00:00','saler':'y'}))
 
-    add(promiseCreater, callback) {
-        let createrIndex = this.allTask.indexOf(promiseCreater)
-        if (createrIndex == -1) {
-            this.allTask.push(promiseCreater)
-        }
-        let nowIndex = this.allTask.indexOf(promiseCreater)
-        // if (nowIndex < 2) {
-            // return new Promise((resolve) => {
-                promiseCreater().then(() => {
-                    resolve(promiseCreater)
-                    this.allTask.splice(nowIndex, 1);
-                    if (this.allTask.length >= 2) {
-                        this.update(this.allTask[1], callback);
-                    }
-                })
-            // })
-        // }
-        // if (!callback) {
-        return new Promise(resolveTop => {
+console.log(
+    s.filter(sItem => {
+        // 遍历 s 
+        let hasSame = false;
+        // 遍历 b
+        b.forEach(bItem => {
+            let isSame = true;
 
+            for (let key in bItem) {
+                if (sItem[key] != bItem[key]) {
+                    isSame = false
+                    return;
+                }
+            }
+
+            if (isSame) {
+                hasSame = true;
+                return
+            }
         })
-        // }/
 
-        // })
-    }
-    update(promiseCreater) {
-
-    }
-}
-
-const timeout = (time) => new Promise(resolve => {
-    setTimeout(resolve, time)
-})
-
-const scheduler = new Scheduler()
-const addTask = (time, order) => {
-    let a = scheduler.add(() => timeout(time), order)
-    // console.log('===')
-    console.log(a)
-    // scheduler.add(() => timeout(time)).then(() => console.log(order))
-}
-
-addTask(2000, 1);
-addTask(100, 2);
-addTask(1000, 3);
-addTask(10, 4);
-
+        return !hasSame
+    }))
