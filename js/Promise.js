@@ -38,16 +38,21 @@ class Promise2 {
         this.state = 'pending'
         this.value = undefined
         this.reason = undefined
+        // 存放then中的callback
+        this.onResolvedCallBacks = []
+        this.onRejectedCallBacks = []
         let resolve = value => {
             if (this.state === 'pending') {
                 this.state = 'fulfilled'
                 this.value = value
+                this.onResolvedCallBacks.forEach(fn => fn());
             }
         }
         let reject = value => {
             if (this.state === 'pending') {
                 this.state = 'rejected'
                 this.reason = value
+                this.onRejectedCallBacks.forEach(fn => fn())
             }
         }
         // 自动执行函数
@@ -59,6 +64,7 @@ class Promise2 {
     }
     // then
     then(onFulfilled, onRejected = function () { }) {
+        console.log(this.state)
         switch (this.state) {
             case 'fulfilled':
                 onFulfilled(this.value)
@@ -66,7 +72,10 @@ class Promise2 {
             case 'rejected':
                 onRejected()
                 break
-            default:
+            case 'pending':
+                this.onResolvedCallBacks.push(() => { onFulfilled(this.value) })
+                this.onRejectedCallBacks.push(() => { onFulfilled(this.reason) })
+                break
         }
     }
 }

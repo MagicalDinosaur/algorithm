@@ -1,34 +1,28 @@
-let s = [
-    { 'type': 'callPhone', 'content': '1', 'contactMethod': 'phone', 'contactTime': '2019-03-25 09:26:55.110000 +00:00', 'saler': 'y' },
-    { 'type': 'callPhone', 'content': '18039519860', 'contactMethod': 'phone', 'contactTime': '2019-03-25 09:26:55.110000 +00:00', 'saler': '朱辛浩' },
-    { 'type': 'callPhone', 'content': '1', 'contactMethod': 'phone', 'contactTime': '2019-03-25 09:26:55.110000 +00:00', 'saler': '朱辛浩' }
-]
-let b = [
-    { 'type': 'callPhone', 'content': '1', 'saler': '朱辛浩' },
-    { 'type': 'callPhone', 'content': '1', 'saler': 'y' }
-]
-// console.log(utils.findIndex(s,{'type':'callPhone','content':'1','contactTime':'2019-03-25 09:26:55.110000 +00:00','saler':'y'}))
-
-console.log(
-    s.filter(sItem => {
-        // 遍历 s 
-        let hasSame = false;
-        // 遍历 b
-        b.forEach(bItem => {
-            let isSame = true;
-
-            for (let key in bItem) {
-                if (sItem[key] != bItem[key]) {
-                    isSame = false
-                    return;
-                }
-            }
-
-            if (isSame) {
-                hasSame = true;
-                return
-            }
-        })
-
-        return !hasSame
-    }))
+function object(o) {
+    function F(){}
+    F.prototype = o;
+    return new F();
+  }
+  function inheritPrototype(subType, suberType) {
+    var prototype = object(suberType.prototype); // 创建对象
+    prototype.constructor = subType; // 增强对象
+    subType.prototype = prototype;  // 指定对象
+  }
+  
+  function SuperType(name) {
+    this.name = name;
+    this.colors = ['red', 'blue', 'green'];
+  }
+  SuperType.prototype.sayName = function() {
+    alert(this.name);
+  }
+  function SubType(name, age) {
+    SuperType.call(this, name);
+    this.age = age;
+  }
+  inheritPrototype(SubType, SuperType);
+  
+  SubType.prototype.sayAge = function() {
+    alert(this.age);
+  }
+  
