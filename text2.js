@@ -1,33 +1,50 @@
-const mapLimit = (list, limit, asyncHandle) => {
-    const recursion = (arr) => {
-        return asyncHandle(arr.shift()).then((res) => {
-            console.log('data', res);
-            if (arr.length > 0) {
-                return recursion(arr)
+class Promise2 {
+    constructor(fn) {
+        this.staus = 'pending'
+        this.value = null
+        this.reason = null
+        this.resolvedFn = null
+        this.rejectedFn = null
+        let resolve = (value) => {
+            // 如果不是pending状态了不会在修改状态
+            if (this.staus === 'pending') {
+                this.staus = 'fullfilled'
+                this.value = value
+                this.resolvedFn()
+                // console.log(this.resolvedFn())
             }
-            return 'finish'
-        })
+        }
+        let reject = (err) => {
+            if (this.staus === 'pending') {
+                this.staus = 'rejected'
+                this.reason = err
+                this.rejectedFn()
+            }
+        }
+        try {
+            fn(resolve, reject)
+        } catch (e) {
+            reject(e)
+        }
     }
-    let asyncList = [];
-    let listCopy = [].concat(list);
-    while (limit--) {
-        asyncList.push(recursion(listCopy));
-        console.log(asyncList)
-    }
-    return Promise.all(asyncList);
 }
 
+Promise2.prototype.then = function (onFullFilled, onRejected) {
+    console.log(this.staus);
+    switch (this.staus) {
+        case 'fullfilled': onFullFilled(this.value); break;
+        case 'rejected': onRejected(this.reason); break;
+        case 'pending':
+            this.rejectedFn = () => { onRejected(this.reason) };
+            this.resolvedFn = () => { onFullFilled(this.value) };
+            break;
+    }
+}
 
-var dataLists = [1,2,3,4,5,6,7,8,9,11,100,123];
-var count = 0;
-mapLimit(dataLists, 3, (curItem)=>{
-    return new Promise(resolve => {
-        count++
-        setTimeout(()=>{
-            console.log(curItem, '当前并发量:', count--)
-            resolve();
-        }, Math.random() * 5000)
-    });
-}).then(response => {
-    console.log('finish', response)
-});
+new Promise2((resolve, reject) => {
+    setTimeout(() => {
+        resolve('123')
+    }, 1000)
+}).then(res => {
+    console.log(res)
+})
