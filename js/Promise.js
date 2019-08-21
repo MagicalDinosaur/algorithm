@@ -89,8 +89,10 @@ new Promise2((resolve, reject) => {
 })
 
 
+
 /**
  * 模拟实现 Promise.finally
+ * 
  * 思路： Promise.finally 实际上就是特殊的 then 方法，不管是 resolved 或者 rejected 状态，都会执行回调函数，并且是不可传参的
  */
 Promise.prototype.finally = function (callback) {
@@ -102,3 +104,32 @@ Promise.prototype.finally = function (callback) {
         reason => P.resolve(callback()).then(() => { throw reason })
     );
 };
+
+
+
+/**
+ * 模拟实现 Promise.all
+ * 
+ * 思路： 
+ * 1. 新建一个 Promise对象，定义一个 counts 值，和一个存放几结果的数组 resValues，开始遍历执行 promiselist
+ * 2. 当一个promise resolve时，向 resValues 中存储结果， count++，并判断 count 是否和 promiselist 长度相等
+ * 3. 当相等时说明所有的 promise 都正常返回了，则将all函数中创建的promise返回resolve状态，参数为 resValues
+ */
+
+Promise.prototype.all = function(promiselist) {
+    return new Promise((resolve, reject) => {
+        let resValues = [];
+        let counts = 0;
+        for (let [i, p] of promiselist) {
+            resolve(p).then(res => {
+                counts++;
+                resValues[i] = res;
+                if (counts === promiselist.length) {
+                    resolve(resValues)
+                }
+            }, err => {
+                reject(err)
+            })
+        }
+    })
+}
