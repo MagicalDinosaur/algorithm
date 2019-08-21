@@ -1,0 +1,22 @@
+{
+  "name": "algorithm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "text.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MagicalDinosaur/algorithm.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MagicalDinosaur/algorithm/issues"
+  },
+  "homepage": "https://github.com/MagicalDinosaur/algorithm#readme",
+  "dependencies": {
+    "recast": "^0.18.2"
+  }
+}

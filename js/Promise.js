@@ -89,4 +89,16 @@ new Promise2((resolve, reject) => {
 })
 
 
-
+/**
+ * 模拟实现 Promise.finally
+ * 思路： Promise.finally 实际上就是特殊的 then 方法，不管是 resolved 或者 rejected 状态，都会执行回调函数，并且是不可传参的
+ */
+Promise.prototype.finally = function (callback) {
+    let P = this.constructor;
+    console.log(P)
+    return this.then(
+        // 兼容callback是异步的所以包一层promise再返回value
+        value => P.resolve(callback()).then(() => value),
+        reason => P.resolve(callback()).then(() => { throw reason })
+    );
+};
