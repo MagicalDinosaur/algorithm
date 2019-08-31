@@ -10,7 +10,7 @@ function flattenDeep2(arr) {
         return Array.isArray(val) ? res.concat(flattenDeep2(val)) : res.concat(val)
     }, [])
 }
-console.log(flattenDeep2([1, 2, [3, 4]]))
+// console.log(flattenDeep2([1, 2, [3, 4]]))
 
 // 利用栈实现
 function flattenDeep3(arr) {
@@ -26,7 +26,7 @@ function flattenDeep3(arr) {
     }
     return result
 }
-console.log(flattenDeep3([1, 2, [3, 4]]))
+// console.log(flattenDeep3([1, 2, [3, 4]]))
 
 
 
@@ -42,4 +42,7 @@ function handleArray(arr) {
     return Array.from(new Set(arr.toString().split(","))).sort((a, b) => a - b)
 }
 let arr = [ [1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14] ] ] ], 10];
-console.log(handleArray(arr));
+// console.log(handleArray(arr));
+
+
+

@@ -30,7 +30,6 @@ function uniq3(arr) {
         return result;
     }, [])
 }
-
-
 let a = [1, 2, 3, 3, 4, 4, 5];
 console.log(uniq3(a));
+

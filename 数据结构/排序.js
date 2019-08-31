@@ -18,9 +18,29 @@ function bubbleSort(arr){
     }
     return arr
 }
-console.log(bubbleSort([3,4,1,2,5]))
+// console.log(bubbleSort([3,4,1,2,5]))
 
 
+// 改进冒泡排序
+// 每次最大值放到最右后，会将本轮最后一个操作的位置 pos 作为下一轮的终点，可以减少不必要的一些冒泡
+function bubbleSort1(arr) {
+    let i = arr.length - 1;
+    while (i > 0) {
+        let pos = 0;
+        for (let j = 0; j < i; j++) {
+            if (arr[j] > arr[j + 1]) {
+                pos = j;
+                const temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+        console.log(pos,arr);
+        i = pos;
+    }
+    return arr;
+}
+console.log(bubbleSort1([1,11,5,7,9,10,8]))
 
 
 /** 快速排序 */
@@ -36,4 +56,4 @@ function quickSort(arr){
     return [...quickSort(left),pivot,...quickSort(right)]
 }
 
-console.log(quickSort([1,5,7,9,10,8]))
+// console.log(quickSort([1,5,7,9,10,8]))
