@@ -116,7 +116,7 @@ Promise.prototype.finally = function (callback) {
  * 3. 当相等时说明所有的 promise 都正常返回了，则将all函数中创建的promise返回resolve状态，参数为 resValues
  */
 
-Promise.prototype.all = function(promiselist) {
+Promise.prototype.all = function (promiselist) {
     return new Promise((resolve, reject) => {
         let resValues = [];
         let counts = 0;
@@ -131,5 +131,25 @@ Promise.prototype.all = function(promiselist) {
                 reject(err)
             })
         }
+    })
+}
+
+
+/**
+ * 模拟实现 Promise.race
+ * 
+ * race 和 promise 的区别是 race 有一个 promise 状态更新了就会立即返回
+ * 
+ * 思路： 
+ * 1. 新建一个 Promise对象，定义一个 counts 值，和一个存放几结果的数组 resValues，开始遍历执行 promiselist
+ * 2. 当一个promise resolve时，向 resValues 中存储结果， count++，并判断 count 是否和 promiselist 长度相等
+ * 3. 当相等时说明所有的 promise 都正常返回了，则将all函数中创建的promise返回resolve状态，参数为 resValues
+ */
+
+Promise.prototype.all = function (promiselist) {
+    return new Promise((resolve, reject) => {
+        promises.forEach(promise => {
+            promise.then(resolve, reject)
+        })
     })
 }
