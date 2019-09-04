@@ -8,8 +8,10 @@ function curry(fn, ...args) {
 // 非递归方式实现 
 const curry2 = (fn) => {
     // fn.length 可以拿到函数定义的形参数量
+    // console.log(fn.length)
     if (fn.length <= 1) return fn;
     const generator = (args, rest) => {
+        console.log(args, rest)
         return (!rest ? fn(...args) : arg => generator([...args, arg], rest - 1));
     }
     return generator([], fn.length);
@@ -17,11 +19,12 @@ const curry2 = (fn) => {
 
 
 
-function sumFunc(a, b, c) {
-    console.log(a + b + c);
+function sumFunc(a, b, c, d, e, f) {
+    // let sum = [...arguments].reduce((a, b) => a + b)
+    console.log([...arguments])
+    // console.log(sum)
 }
-var sum = curry2(sumFunc);
-sum(1)(2, 5)(3)(4)
+
 
 
 /**
@@ -34,30 +37,22 @@ sum(1)(2, 5)(3)(4)
  *  add(1, 2)(3); // 6
  *  add(1, 2, 3); // 6
  */
-function add() {
-    let args = [].slice.call(arguments);
-    let fn = function () {
-        let fn_args = [].slice.call(arguments)
-        return add.apply(null, args.concat(fn_args))
+
+function curry3(fn) {
+    const func = (argsAll) => {
+        // console.log(argsAll, argsAll.length , fn.length)
+        return argsAll.length >= fn.length ? fn(...argsAll) : function () {
+            return func([...argsAll, ...arguments], fn.length)
+        }
     }
-    fn.toString = function () {
-        return args.reduce((a, b) => a + b)
-    }
-    return fn
+    return func([]);
 }
 
-function add2() {
-    let args = [...arguments];
+// var sum2 = curry2(sumFunc);
+// sum2(1)(2, 5)(3)(1)(1)
 
-    return function () {
-        let args2 = [...arguments]
-        return
-    }
-    function sum(args) {
-        return args.reduce((a, b) => a + b)
-    }
-}
-
-// console.log(add(1)(2)(3))
-
+var sum3 = curry3(sumFunc);
+const sum = sum3(1)(2, 5)(3)(1)(1)
+console.log(sum)
+// sum3(1)
 

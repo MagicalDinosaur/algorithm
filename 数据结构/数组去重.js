@@ -33,3 +33,8 @@ function uniq3(arr) {
 let a = [1, 2, 3, 3, 4, 4, 5];
 console.log(uniq3(a));
 
+
+/***
+ * 复杂数组去重
+ */
+
