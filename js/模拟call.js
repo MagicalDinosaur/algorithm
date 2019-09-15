@@ -1,25 +1,37 @@
 // 原生js模拟call函数
 Function.prototype._call = function () {
-    let [_this, ...args] = [...arguments]
-    if (!_this) {
-        _this = typeof window === 'object' ? window : global
+    let [self, ...args] = [...arguments]
+    if (!self) {
+        self = typeof window === 'object' ? window : global
     }
-    _this.fn = this;// this 为当前调用_call函数的函数对象
-    let result = _this.fn(...args);//执行函数，并将参数传入
-    delete _this.fn // 函数运行完删除即可
+    self.fn = this;// this 为当前调用_call函数的函数对象
+    let result = self.fn(...args);//执行函数，并将参数传入
+    delete self.fn // 函数运行完删除即可
     return result
 }
 
 // 和 call 只是在传参形式上不一样
-Function.prototype._apply = function (_this, args = []) {
+Function.prototype._apply = function (self, args = []) {
     if (!Array.isArray(args)) return;
-    if (!_this) {
-        _this = typeof window === 'object' ? window : global
+    if (!self) {
+        self = typeof window === 'object' ? window : global
     }
-    _this.fn = this;
-    let result = args.length ? _this.fn(...args) : _this.fn();
-    delete _this.fn
+    self.fn = this;
+    let result = args.length ? self.fn(...args) : self.fn();
+    delete self.fn
     return result
+}
+
+// bind 和 call/apply 的区别是会返回一个函数而不是立即执行
+Function.prototype._bind = function (self) {
+    if (!self) {
+        self = typeof window === 'object' ? window : global
+    }
+    self.fn = this
+    return function () {
+        let [...args] = [...arguments]
+        self.fn(args)
+    }
 }
 
 
@@ -31,6 +43,8 @@ let b = {
     value: 'b'
 }
 
-a._call(b);
-a._apply(b)
+// a._call(b);
+// a._apply(b)
+a._bind(b)()
+
 
