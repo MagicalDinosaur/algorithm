@@ -31,8 +31,24 @@ function uniq3(arr) {
     }, [])
 }
 let a = [1, 2, 3, 3, 4, 4, 5];
-console.log(uniq3(a));
+// console.log(uniq3(a));
 
+// 方法四：
+function uniq4(list) {
+    // 数组去重，要求时间复杂度O(nlogn) 空间复杂度O(1)
+    // 1 1 2 2 3 4
+    // 当然你可以自己写快排等nlogn的算法
+    list = list.sort((a, b) => a - b);
+    let slowP = 0;
+    for (let fastP = 0; fastP < list.length; fastP++) {
+        if (list[fastP] !== list[slowP]) {
+            slowP++;
+            list[slowP] = list[fastP];
+        }
+    }
+    return list.slice(0, slowP + 1);
+}
+console.log(uniq4(a));
 
 /***
  * 复杂的数组去重
