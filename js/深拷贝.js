@@ -1,10 +1,12 @@
 /**
  * 深拷贝函数
+ * 引入 hash 的意义是解决环状调用
+ *  
  */
 function deepClone(obj, hash = new WeakMap()) {
     // 判断是否已经拷贝过该对象
     if (hash.has(obj)) {
-        return hash.get(obj)
+        return hash.get(obj) // 解决了环问题
     }
     // 首先判断 Date 和 RegExp 类型
     if (obj instanceof RegExp) return new RegExp(obj);
@@ -13,7 +15,7 @@ function deepClone(obj, hash = new WeakMap()) {
     if (obj === null || (typeof obj != 'object')) return obj;
     // obj如果是数组 obj.constructor 返回 [function:Array],obj如果是对象返回 [function:Object]
     let t = new obj.constructor();
-    // 将 obj 作为 key 写入 weakmap
+    // 将 obj 作为 key 写入 weakMap
     hash.set(obj, t);
     // 复杂类型进行递归
     for (let key in obj) {
@@ -23,7 +25,6 @@ function deepClone(obj, hash = new WeakMap()) {
     }
     return t;
 }
-
 
 
 let obj = {
@@ -37,7 +38,7 @@ let obj = {
         i: [1, 2, 3]
     }
 }
-// obj.loop = obj;
+// obj.loop = obj; //环状调用
 var obj2 = deepClone(obj);
 
 

@@ -1,7 +1,7 @@
 /**
  * 数组去重
  */
-
+let a = [1, 2, 3, 3, 4, 4, 5];
 
 // ES6 Set 结构实现
 // Set 对象允许你存储任何类型的唯一值，无论是原始值或者是对象引用。
@@ -9,8 +9,8 @@ function uniq(arr) {
     return [...new Set(arr)]
 }
 
-
 // 正常的for循环查找
+
 function uniq2(arr) {
     let result = [];
     for (let i = 0; i < arr.length; i++) {
@@ -21,7 +21,6 @@ function uniq2(arr) {
     return result;
 }
 
-
 // 利用 reduce函数
 function uniq3(arr) {
     return arr.reduce((result, item) => {
@@ -30,10 +29,9 @@ function uniq3(arr) {
         return result;
     }, [])
 }
-let a = [1, 2, 3, 3, 4, 4, 5];
 // console.log(uniq3(a));
 
-// 方法四：
+// 利用排序
 function uniq4(list) {
     // 数组去重，要求时间复杂度O(nlogn) 空间复杂度O(1)
     // 1 1 2 2 3 4
@@ -48,7 +46,24 @@ function uniq4(list) {
     }
     return list.slice(0, slowP + 1);
 }
-console.log(uniq4(a));
+// console.log(uniq4(a));
+
+// 开辟一个外部存储空间用于标示元素是否出现过
+function uniq5(arr) {
+    let result = {}
+    for (let i = 0; i < arr.length; i++) {
+        if (!result[arr[i]]) {
+            result[arr[i]] = true
+        }
+    }
+    return Object.keys(result)
+}
+console.log(uniq5(a));
+
+// 利用 indexOf
+const filterNonUnique = arr => arr.filter(i =>
+    arr.indexOf(i) === arr.lastIndexOf(i)
+)
 
 /***
  * 复杂的数组去重
@@ -121,3 +136,5 @@ function unique(arr) {
         return outputArr;
     }, []);
 }
+
+

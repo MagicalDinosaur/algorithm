@@ -1,17 +1,16 @@
 /**
  * 模拟实现 instanceof
  */
-function instanceOf(A, B) {
+function instanceOf(target, origin) {
     while (true) {
         // 原型链到头仍未找到返回false
-        if(A === null){
+        if(target === null){
             return false
         }
-        if (A === B.prototype) {
-            console.log(A,B)
+        if (target === origin.prototype) {
             return true
         }
-        A = A.__proto__
+        target = target.__proto__
     }
 }
 

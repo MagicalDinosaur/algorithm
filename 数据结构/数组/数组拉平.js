@@ -5,7 +5,7 @@ function flattenDeep(arr, deepLength) {
 
 // 递归实现
 function flattenDeep2(arr) {
-    // 作为第一次调用 callback函数时的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。
+    // 作为第一次调用 callback 函数时的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。
     return arr.reduce((res, val) => {
         return Array.isArray(val) ? res.concat(flattenDeep2(val)) : res.concat(val)
     }, [])

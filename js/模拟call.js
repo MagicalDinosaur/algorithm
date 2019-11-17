@@ -1,12 +1,17 @@
 // 原生js模拟call函数
-Function.prototype._call = function () {
-    let [self, ...args] = [...arguments]
+Function.prototype._call = function (self,args) {
+    // 防止 Function.prototype.myCall() 直接调用
+    if(this === Function.prototype){
+        return undefined
+    }
     if (!self) {
         self = typeof window === 'object' ? window : global
     }
-    self.fn = this;// this 为当前调用_call函数的函数对象
-    let result = self.fn(...args);//执行函数，并将参数传入
-    delete self.fn // 函数运行完删除即可
+    // 给 self 创建一个 symbol 属性，为了防止重名
+    const fn = Symbol()
+    self[fn] = this;// this 为当前调用_call函数的函数对象
+    let result = self[fn](...args);//执行函数，并将参数传入
+    delete self[fn] // 函数运行完删除即可
     return result
 }
 
@@ -16,9 +21,10 @@ Function.prototype._apply = function (self, args = []) {
     if (!self) {
         self = typeof window === 'object' ? window : global
     }
-    self.fn = this;
-    let result = args.length ? self.fn(...args) : self.fn();
-    delete self.fn
+    const fn = Symbol()
+    self[fn] = this;
+    let result = args.length ? self[fn](...args) : self[fn]();
+    delete self[fn]
     return result
 }
 
@@ -27,10 +33,11 @@ Function.prototype._bind = function (self) {
     if (!self) {
         self = typeof window === 'object' ? window : global
     }
-    self.fn = this
+    const fn = Symbol()
+    self[fn] = this;
     return function () {
         let [...args] = [...arguments]
-        self.fn(args)
+        self[fn](args)
     }
 }
 
